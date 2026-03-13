@@ -7,7 +7,24 @@ import helmet from 'helmet';
 import { AllExceptionsFilter } from './common/filters/http-exception/http-exception.filter';
 import { PrismaClientExceptionFilter } from './common/filters/prisma-exception/prisma-exception.filter';
 
+const STARTUP_BANNER = `
+\x1b[36m
+  _   _           _   _____             _ _       
+ | \\ | |         | | |_   _|           (_) |      
+ |  \\| | ___  ___| |_  | |  __ _ _ __   _| |_ ___ 
+ | . \` |/ _ \\/ __| __| | | / _\` | '_ \\ | | __/ _ \\
+ | |\\  |  __/\\__ \\ |_ _| || (_| | | | || | ||  __/
+ \\_| \\_/\\___||___/\\__\\___/ \\__, |_| |_||_|\\__\\___|
+                            __/ |                 
+                           |___/                  
+
+ :: NestJS Template by tulioanesio::        (v1.0.0)
+\x1b[36m
+`;
+
 async function bootstrap() {
+  console.log(STARTUP_BANNER);
+
   const app = await NestFactory.create(AppModule);
   const defaultVersion = '1';
 
@@ -34,10 +51,10 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-  origin: ['http://localhost:3000', /*'https://frontendurl.com'*/],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-});
+    origin: ['http://localhost:3000' /*'https://frontendurl.com'*/],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
   const { httpAdapter } = app.get(HttpAdapterHost);
 
@@ -87,6 +104,8 @@ async function bootstrap() {
     `🚀 Application is running on: http://localhost:${port}/api/v${defaultVersion}`,
   );
   Logger.log(`📖 Documentation is available at: http://localhost:${port}/docs`);
-  Logger.log(`📍 Health check is available at: http://localhost:${port}/v${defaultVersion}/health`);
+  Logger.log(
+    `📍 Health check is available at: http://localhost:${port}/v${defaultVersion}/health`,
+  );
 }
 bootstrap();
