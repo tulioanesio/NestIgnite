@@ -87,5 +87,6 @@ async function bootstrap() {
     `🚀 Application is running on: http://localhost:${port}/api/v${defaultVersion}`,
   );
   Logger.log(`📖 Documentation is available at: http://localhost:${port}/docs`);
+  Logger.log(`📍 Health check is available at: http://localhost:${port}/v${defaultVersion}/health`);
 }
 bootstrap();

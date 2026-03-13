@@ -6,6 +6,7 @@ import { envSchema } from './config/env.validation';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { HealthController } from './health/health.controller';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { HealthController } from './health/health.controller';
     ]),
     PrismaModule,
     UserModule,
+    HealthModule,
   ],
   providers: [
     {
@@ -38,6 +40,6 @@ import { HealthController } from './health/health.controller';
       useClass: ThrottlerGuard,
     },
   ],
-  controllers: [HealthController],
+  controllers: [],
 })
 export class AppModule {}
