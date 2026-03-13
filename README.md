@@ -1,5 +1,12 @@
-Markdown
 # NestIgnite
+
+<p align="left">
+  <img src="https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS" />
+  <img src="https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white" alt="Prisma" />
+  <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License" />
+</p>
 
 A robust, production-ready backend template built with NestJS and Prisma ORM. NestIgnite is designed to accelerate API development by embedding industry best practices, strict typing, security, and a scalable architecture directly from the start.
 
