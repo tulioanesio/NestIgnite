@@ -20,9 +20,12 @@ WORKDIR /app
 
 RUN npm install -g pnpm
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./
+COPY --from=builder /app/package.json /app/pnpm-lock.yaml ./
+
+RUN pnpm install --frozen-lockfile --prod
+
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/src/generated ./src/generated
 COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 3000

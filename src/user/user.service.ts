@@ -16,20 +16,20 @@ export class UserService {
     return this.prismaService.user.findMany();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prismaService.user.findUnique({
       where: { id },
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     return this.prismaService.user.update({
       where: { id },
       data: updateUserDto,
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prismaService.user.delete({
       where: { id },
     });

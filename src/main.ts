@@ -1,14 +1,14 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { apiReference } from '@scalar/nestjs-api-reference';
 import helmet from 'helmet';
 import { AllExceptionsFilter } from './common/filters/http-exception/http-exception.filter';
 import { PrismaClientExceptionFilter } from './common/filters/prisma-exception/prisma-exception.filter';
+import { setupSwagger } from './swagger';
 
 const STARTUP_BANNER = `
-\x1b[36m
+\x1b[31m
   _   _           _   _____             _ _       
  | \\ | |         | | |_   _|           (_) |      
  |  \\| | ___  ___| |_  | |  __ _ _ __   _| |_ ___ 
@@ -19,7 +19,7 @@ const STARTUP_BANNER = `
                            |___/                  
 
  :: NestJS Template by tulioanesio::        (v1.0.0)
-\x1b[36m
+\x1b[0m
 `;
 
 async function bootstrap() {
@@ -79,25 +79,11 @@ async function bootstrap() {
 
   app.enableShutdownHooks();
 
-  const config = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('API Description')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .addServer(`http://localhost:${process.env.PORT ?? 3000}`)
-    .build();
+  const configService = app.get(ConfigService);
 
-  const document = SwaggerModule.createDocument(app, config);
+  setupSwagger(app, configService);
 
-  app.use(
-    '/docs',
-    apiReference({
-      theme: 'default',
-      content: document,
-    }),
-  );
-
-  const port = process.env.PORT ?? 3000;
+  const port = configService.get<number>('PORT') ?? 3000;
   await app.listen(port);
 
   Logger.log(

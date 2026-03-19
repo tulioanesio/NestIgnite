@@ -4,17 +4,21 @@ services:
     container_name: test_db
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: test_api_db
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-test_api_db}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   # redis:
   #   image: redis:alpine
-  #   container_name: tableat-redis
+  #   container_name: test_redis
   #   ports:
   #     - "6379:6379"
   #   restart: always
@@ -26,11 +30,14 @@ services:
     container_name: test_api
     restart: always
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:${PORT:-3000}"
     environment:
-      DATABASE_URL: postgresql://postgres:password@db:5432/test_api_db?schema=public
-      PORT: 3000
+      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-password}@db:5432/${DB_NAME:-test_api_db}?schema=public
+      PORT: ${PORT:-3000}
+      NODE_ENV: ${NODE_ENV:-development}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
 volumes:
   postgres_data:
