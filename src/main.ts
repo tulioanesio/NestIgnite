@@ -5,7 +5,7 @@ import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import helmet from 'helmet';
 import { AllExceptionsFilter } from './common/filters/http-exception/http-exception.filter';
 import { PrismaClientExceptionFilter } from './common/filters/prisma-exception/prisma-exception.filter';
-import { setupSwagger } from './swagger';
+import { setupSwagger } from './swagger/swagger';
 
 const STARTUP_BANNER = `
 \x1b[31m
@@ -50,8 +50,13 @@ async function bootstrap() {
       },
     }),
   );
+
+  const configService = app.get(ConfigService);
+
+  const origins =
+    configService.get<string>('ALLOWED_ORIGINS')?.split(',') ?? [];
   app.enableCors({
-    origin: ['http://localhost:3000' /*'https://frontendurl.com'*/],
+    origin: origins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -78,8 +83,6 @@ async function bootstrap() {
   );
 
   app.enableShutdownHooks();
-
-  const configService = app.get(ConfigService);
 
   setupSwagger(app, configService);
 
