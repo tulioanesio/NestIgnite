@@ -20,7 +20,7 @@ export function setupSwagger(
         'Prisma exception filter, Helmet security headers, configurable CORS.\n\n' +
         '> Replace this description with your project-specific information before shipping to production.',
     )
-    .setVersion('1.3.1')
+    .setVersion('1.3.2')
     .setContact(
       'tulioanesio',
       'https://github.com/tulioanesio',
